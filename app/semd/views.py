@@ -96,6 +96,9 @@ class devRecords(Resource):
         result = []
         for ele in to_json_list(records):
             del ele['id']
+            del ele['dev_temp']
+            del ele['dev_qua']
+            del ele['valtage']
             del location['id']
             del location['uuid']
             ele['location'] = location
