@@ -126,6 +126,7 @@ class latestRec(Resource):
             args['humidity'], args['pm2_5'], args['noise'],
             args['dev_temp'], args['dev_qua'], args['valtage'])
         exit = lastestRecord.query.filter_by(uuid=args['uuid']).first()
+        return to_json(exit)
         if exit is not None:
             exit.datetime = args['datetime']
             exit.temperature = args['temperature']
@@ -176,7 +177,7 @@ class latestRec(Resource):
                     now - rec_time).seconds > 300 else ele)
         return {'code': 0, 'data': result}, 200
 
-
+# 根据设备ID获取数据
 class latestDevRecord(Resource):
     """docstring for latestDevRecord"""
     def get(self):

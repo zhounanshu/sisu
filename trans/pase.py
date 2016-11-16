@@ -3,7 +3,7 @@
 import hexdump
 import socket
 from wifi_config import *
-from dbConnection import *
+from poster import *
 import select
 import os
 import sys
