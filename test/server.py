@@ -1,8 +1,19 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 import socket
-port = 8081
+import os
+import sys
+address = ('', 8081)
 s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-s.bind(("", port))
-print "waiting on port:", port
-while 1:
-    data, addr = s.recvfrom(1024)
-    print data
+s.bind(address)
+
+while True:
+    data, addr = s.recvfrom(2048)
+    if not data:
+        print "client has exist"
+        break
+    with open('log.txt', 'a+') as f:
+        log = addr[0] + ": " + data + "\n"
+        f.write(log)
+        f.close()
+s.close()

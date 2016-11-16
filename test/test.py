@@ -8,8 +8,8 @@ except socket.error:
     print 'Failed to create socket'
     sys.exit()
 
-host = 'localhost';
-port = 8081;
+host = 'localhost'
+port = 8081
 
 while(1) :
     msg = raw_input('Enter message to send : ')
