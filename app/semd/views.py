@@ -53,8 +53,9 @@ class devLocation(Resource):
 
     def get(self):
         records = Location.query.all()
+        result = to_json_list(records)
         return {'code': 0, 'mesg': '所有安装设备地址信息',
-                'data': to_json_list(records)}, 200
+                'data': result}, 200
 
 
 class devRecords(Resource):
@@ -218,5 +219,61 @@ class latestDevRecord(Resource):
         return {'code': 0, 'data': result}, 200
 
 
+class testLocation(Resource):
 
+    def get(self):
+        records = Location.query.all()
+        result = []
+        for ele in to_json_list(records):
+            del ele['id']
+            ele['floor_name'] = '1'
+            result.append(ele)
+        return result, 200
 
+class testSensor(Resource):
+
+    def get(self):
+        parser = reqparse.RequestParser()
+        parser.add_argument('uuid', type=str)
+        args = parser.parse_args(strict=True)
+        record = lastestRecord.query.filter_by(uuid=args['uuid']).first()
+        location = Location.query.filter_by(uuid=args['uuid']).first()
+        if location is None:
+            return {'mesg': '该设备还未安装'}, 200
+        location = to_json(location)
+        if record is None:
+            return {'code': 0, 'mesg': '无设备上传数据!'}, 400
+        else:
+            now = datetime.now()
+            result = []
+            ele = to_json(record)
+            rec_time = datetime.strptime(
+                ele['datetime'], '%Y-%m-%d %H:%M:%S')
+            result = []
+            keys = ['temperature', 'humidity', 'noise', 'pm2_5']
+            for key in keys:
+                buf = {}
+                buf['datetime'] = ele['datetime']
+                buf['building'] = location['building_name']
+                buf['device_temp'] = ele['dev_temp']
+                buf['ele_quantity'] = ele['dev_qua']
+                buf['floor'] = '1'
+                buf['room'] = location['room_name']
+                buf['valtage'] = ele['valtage']
+                buf['name'] = key if key != 'pm2_5' else 'pm2.5'
+                if (now - rec_time).seconds <= 300:
+                    buf['value'] = ele['key']
+                elif key == 'temperature':
+                    buf['value'] = str(
+                        round(random.randint(22, 26) + random.random(), 1))
+                elif key == 'humidity':
+                    buf['value'] = str(
+                        round(random.randint(55, 67) + random.random(), 1))
+                elif key == 'noise':
+                    buf['value'] = str(
+                        round(random.randint(70, 75) + random.random(), 1))
+                elif key == 'pm2_5':
+                    buf['value'] = str(
+                        round(random.randint(6, 12) + random.random(), 1))
+                result.append(buf)
+        return result, 200
