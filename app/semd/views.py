@@ -94,14 +94,14 @@ class devRecords(Resource):
             devData.datetime >= start_time,
             devData.datetime <= end_time, devData.uuid == args['uuid']).all()
         location = to_json(Location.query.filter_by(uuid=args['uuid']).first())
+        del location['id']
+        del location['uuid']
         result = []
         for ele in to_json_list(records):
             del ele['id']
             del ele['dev_temp']
             del ele['dev_qua']
             del ele['valtage']
-            del location['id']
-            del location['uuid']
             ele['location'] = location
             result.append((ele))
         return {'code': 0, 'data': result}, 200
