@@ -159,7 +159,7 @@ class latestRec(Resource):
                 default['pm2_5'] = str(
                     round(random.randint(6, 12) + random.random(), 1))
                 default['noise'] = str(
-                    round(random.randint(70, 75) + random.random(), 1))
+                    round(random.randint(45, 55) + random.random(), 1))
                 default['datetime'] = now.strftime('%Y-%m-%d %H:%M:%S')
                 default['uuid'] = ele['uuid']
                 location = Location.query.filter_by(uuid=ele['uuid']).first()
@@ -195,13 +195,13 @@ class latestDevRecord(Resource):
                 ele['datetime'], '%Y-%m-%d %H:%M:%S')
             default = {}
             default['temperature'] = str(
-                round(random.randint(22, 26) + random.random(), 1))
+                round(random.randint(20, 23) + random.random(), 1))
             default['humidity'] = str(
                 round(random.randint(55, 67) + random.random(), 1))
             default['pm2_5'] = str(
                 round(random.randint(6, 12) + random.random(), 1))
             default['noise'] = str(
-                round(random.randint(70, 75) + random.random(), 1))
+                round(random.randint(45, 55) + random.random(), 1))
             default['datetime'] = now.strftime('%Y-%m-%d %H:%M:%S')
             default['uuid'] = ele['uuid']
             location = Location.query.filter_by(uuid=ele['uuid']).first()
