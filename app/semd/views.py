@@ -126,7 +126,6 @@ class latestRec(Resource):
             args['humidity'], args['pm2_5'], args['noise'],
             args['dev_temp'], args['dev_qua'], args['valtage'])
         exit = lastestRecord.query.filter_by(uuid=args['uuid']).first()
-        return to_json(exit)
         if exit is not None:
             exit.datetime = args['datetime']
             exit.temperature = args['temperature']
